@@ -27,10 +27,13 @@ def get_all(db: Session = Depends(get_db)):
 @router.delete("/{id}")
 def delete(id: int, db: Session = Depends(get_db)):
     incident = db.query(models.Incident).get(id)
+
+    if not incident:
+        return {"error": "Not found"}
+
     db.delete(incident)
     db.commit()
     return {"message": "Deleted"}
-
 
 @router.put("/{id}")
 def update_incident(id: int, updated: schemas.IncidentCreate, db: Session = Depends(get_db)):
