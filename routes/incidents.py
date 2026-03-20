@@ -30,3 +30,19 @@ def delete(id: int, db: Session = Depends(get_db)):
     db.delete(incident)
     db.commit()
     return {"message": "Deleted"}
+
+
+@router.put("/{id}")
+def update_incident(id: int, updated: schemas.IncidentCreate, db: Session = Depends(get_db)):
+    incident = db.query(models.Incident).get(id)
+
+    if not incident:
+        return {"error": "Incident not found"}
+
+    incident.location = updated.location
+    incident.route = updated.route
+    incident.delay_minutes = updated.delay_minutes
+    incident.description = updated.description
+
+    db.commit()
+    return {"message": "Updated successfully"}
