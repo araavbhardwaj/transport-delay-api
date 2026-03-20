@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 import datetime
 
 class IncidentCreate(BaseModel):
@@ -11,9 +11,7 @@ class IncidentResponse(IncidentCreate):
     id: int
     timestamp: datetime.datetime
 
-    class Config:
-        orm_mode = True
-
+    model_config = ConfigDict(from_attributes=True)
 
 class UserCreate(BaseModel):
     username: str
